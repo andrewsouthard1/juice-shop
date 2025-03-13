@@ -25,12 +25,13 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     - name: confirm json
-
       run: cat results-code.json
+    - name: Debug - List Files
+      run: ls -l
     - name: test snyk-to-html
       run:  snyk-to-html -i $(pwd)/results-code.json -o results-code.html --debug
     - name: Upload html output
-      uses: actions/upload-artifact@v4.6.1
+      uses: actions/upload-artifact@v4
       with:
        name: results-code.html
        path: results-code.html
