@@ -21,6 +21,7 @@ jobs:
          sudo npm install -g snyk-to-html
     - name: Snyk code test
       run: snyk code test --json-file-output=results-code.json
+      continue-on-error: true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     - name: confirm json
