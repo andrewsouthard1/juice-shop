@@ -28,6 +28,8 @@ jobs:
       run: cat ./results-code.json
     - name: test snyk-to-html
       run:  if command -v snyk-to-html &> /dev/null; then snyk-to-html -i ./results-code.json -o ./results-code.html --debug; else echo "snyk-to-html not found"; exit 1; fi
+    - name: cat ./results-code.html
+      run: cat ./results-code.html
     - name: Upload html output
       uses: actions/upload-artifact@v4.6.1
       with:
