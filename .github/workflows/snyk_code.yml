@@ -20,7 +20,7 @@ jobs:
       run: |
          sudo npm install -g snyk-to-html
     - name: Snyk code test
-      run: snyk code test -json | snyk-to-html -o results-code.html
+      run: snyk code test --json | snyk-to-html -o results-code.html
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       continue-on-error: true
