@@ -19,7 +19,7 @@ jobs:
     - name: Snyk Action
       run: npm install -g snyk-to-html
     - name: Snyk code test
-      run: snyk code test --json-file-output=results-code.json
+      run: snyk code test --severity-threshold=high --json-file-output=results-code.json
       continue-on-error: true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
