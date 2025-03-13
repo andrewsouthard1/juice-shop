@@ -14,9 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
     - name: Setup Snyk
-      uses: snyk/actions/setup@v2
+    - uses: snyk/actions/setup@v2
 
     - name: Install Snyk CLI 
       run: npm install -g snyk
