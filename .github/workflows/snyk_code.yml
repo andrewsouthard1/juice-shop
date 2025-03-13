@@ -26,8 +26,6 @@ jobs:
       continue-on-error: true
     - name: confirm json
       run: cat results-code.json
-    - name: snyk-to-html
-      run: snyk-to-html -i results-code.json -o results-code.html
     - name: test snyk-to-html
       run:  if command -v snyk-to-html &> /dev/null; then snyk-to-html -i results-code.json -o results-code.html --debug; else echo "snyk-to-html not found"; exit 1; fi
     - name: Upload html output
