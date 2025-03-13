@@ -27,7 +27,7 @@ jobs:
     - name: confirm json
       run: cat results-code.json
     - name: snyk-to-html
-      run: snyk-to-html -i results-code.json -o results-code.html -d
+      run: snyk-to-html -d -i results-code.json -o results-code.html -d
     - name: Upload html output
       uses: actions/upload-artifact@v4.6.1
       with:
