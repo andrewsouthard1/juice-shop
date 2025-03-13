@@ -24,6 +24,8 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       continue-on-error: true
+    - name: confirm json
+      run: cat results-code.json
     - name: snyk-to-html
       run: snyk-to-html -i results-code.json -o results-code.html
        # Upload Artifact   
