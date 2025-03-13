@@ -17,7 +17,8 @@ jobs:
     # Checkout Code
     - name: Checkout Code
       uses: actions/checkout@v1
-
+    - name: NPM install
+      run: npm install
     # Install and Authenticate to Snyk
     - name: Snyk Action
       run: |
