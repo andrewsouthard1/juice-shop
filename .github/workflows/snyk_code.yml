@@ -17,8 +17,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: snyk/actions/setup@master
     - name: Snyk Action
-      run: |
-         sudo npm install -g snyk-to-html
+      run: npm install -g snyk-to-html
     - name: Snyk code test
       run: snyk code test --json-file-output=results-code.json
       continue-on-error: true
