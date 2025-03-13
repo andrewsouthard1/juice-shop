@@ -23,6 +23,10 @@ jobs:
       continue-on-error: true
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    - name: Run Minimal snyk-to-html Test
+      run: |
+        chmod +x test-snyk-html.sh
+        ./test-snyk-html.sh
     - name: confirm json
       run: cat results-code.json
     - name: Debug - List Files
