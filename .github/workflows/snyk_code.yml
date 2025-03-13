@@ -27,6 +27,8 @@ jobs:
       run: cat results-code.json
     - name: Debug - List Files
       run: ls -l
+    - name: check json perms
+      run: getfacl results-code.json
     - name: test snyk-to-html
       run:  snyk-to-html -i $(pwd)/results-code.json -o results-code.html --debug
     - name: Upload html output
