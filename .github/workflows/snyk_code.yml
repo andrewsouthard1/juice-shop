@@ -20,12 +20,12 @@ jobs:
       run: |
          sudo npm install -g snyk-to-html
     - name: Snyk code test
-      run: snyk code test --json
+      run: snyk code test --json-file-output=results-code.json
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       continue-on-error: true
     - name: snyk-to-html
-      run: snyk-to-html -o results-code.html
+      run: snyk-to-html -i results-code.json -o results-code.html
        # Upload Artifact   
     - name: Upload html output
       uses: actions/upload-artifact@v4.6.1
