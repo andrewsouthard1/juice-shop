@@ -12,12 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-       
+
     steps:
     - uses: actions/checkout@v1
     - uses: snyk/actions/setup@master
+    - name: Snyk Action
+      run: |
+         sudo npm install -g snyk-to-html
     - name: Snyk code test
-      run: snyk code test
+      run: snyk code test -json | snyk-to-html -o results-code.html
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       continue-on-error: true
+       # Upload Artifact   
+    - name: Upload html output
+      uses: actions/upload-artifact@v4.6.1
+      with:
+       name: results-code.html
+       path: ./results-code.html
