@@ -19,7 +19,7 @@ jobs:
       uses: actions/checkout@v1
 
     # Install and Authenticate to Snyk
-    - name: Install Snyk & Authenticate
+    - name: Snyk Action
       run: |
          sudo npm install -g snyk
          sudo npm install -g snyk-to-html
@@ -36,7 +36,7 @@ jobs:
       continue-on-error: true
    # Upload Artifact   
     - name: Upload html output
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4.6.1
       with:
        name: results.html
        path: ./results.html
