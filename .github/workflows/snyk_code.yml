@@ -1,35 +1,43 @@
-name: "Snyk Code Test"
+name: "Snyk Code Test pipeline"
 
 on:
   push:
     branches:
-    - master
+      - master
 
 jobs:
   Pipeline-Job:
-    # Configure Environment
     name: 'Snyk Test'
     runs-on: ubuntu-latest
     env: 
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
     steps:
-    - uses: actions/checkout@v1
-    - uses: snyk/actions/setup@master
-    - name: Snyk Action
-      run: |
-         sudo npm install -g snyk-to-html
-    - name: Snyk code test
+    - uses: actions/checkout@v4
+
+    - name: Setup Snyk
+      uses: snyk/actions/setup@v2
+
+    - name: Install Snyk CLI 
+      run: npm install -g snyk
+
+    - name: Snyk Code Test
       run: snyk code test --json-file-output=results-code.json
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       continue-on-error: true
-    - name: confirm json
+
+    - name: Confirm JSON output
       run: cat results-code.json
-    - name: test snyk-to-html
-      run:  if command -v snyk-to-html &> /dev/null; then snyk-to-html -i $(pwd)/results-code.json -o results-code.html --debug; else echo "snyk-to-html not found"; exit 1; fi
-    - name: Upload html output
-      uses: actions/upload-artifact@v4.6.1
+
+    - name: Install snyk-to-html 
+      run: npm install snyk-to-html
+
+    - name: Convert JSON to HTML
+      run:  snyk-to-html -i results-code.json -o results-code.html --debug
+
+    - name: Upload HTML output
+      uses: actions/upload-artifact@v4
       with:
-       name: results-code.html
-       path: results-code.html
+        name: results-code.html
+        path: ./results-code.html
