@@ -1,6 +1,32 @@
 const users = require('../data/datacache').users
 const config = require('config')
 
+const express = require('express');
+const router = express.Router();
+const sqlite3 = require('sqlite3').verbose();
+
+router.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Vulnerable: Unsanitized user input directly concatenated into SQL query
+    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+
+    let db = new sqlite3.Database('./database.db');
+    db.get(query, (err, row) => {
+        if (err) {
+            return res.status(500).send('An error occurred');
+        }
+        if (row) {
+            return res.status(200).send('Login successful');
+        } else {
+            return res.status(401).send('Invalid credentials');
+        }
+    });
+});
+
+module.exports = router;
+
+
 module.exports = function login () {
   function afterLogin (user, res, next) {
     verifyPostLoginChallenges(user)
