@@ -34,7 +34,7 @@ jobs:
     - name: check json perms
       run: getfacl results-code.json
     - name: test snyk-to-html
-      run:  snyk-to-html -i $(pwd)/results-code.json -o results-code.html --debug
+      run:  snyk-to-html -i $(pwd)/results-code.json -o results-code.html
     - name: Upload html output
       uses: actions/upload-artifact@v4
       with:
