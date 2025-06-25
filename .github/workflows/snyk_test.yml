@@ -26,23 +26,30 @@ jobs:
       run: npm install
     # Install and Authenticate to Snyk
     - name: Snyk Action
-      run: |
-         sudo npm install -g snyk
-         sudo npm install -g snyk-to-html
-      continue-on-error: true
+      uses: snyk/actions/setup@master
+    - name: Snyk-to-html
+      run: npm install -g snyk-to-html
     # Run Snyk Open Source
     - name: Run Snyk Open Source
       run: |
-         snyk test --severity-threshold=high --all-projects --json 
+         snyk test --severity-threshold=high --all-projects --json-file-output=results.html 
          snyk-to-html -o ./results.html
       continue-on-error: true
     - name: Snyk Open Source Monitor
       run: |
          snyk monitor --severity-threshold=high --all-projects
       continue-on-error: true
-   # Upload Artifact   
-    - name: Upload html output
+    - name: Generate CycloneDX SBOM for All Projects
+      run: |
+        snyk sbom --all-projects --format=cyclonedx1.4+json --output=sbom.cdx.json 
+      continue-on-error: true
+    # Upload Artifacts
+    - name: Upload HTML and SBOM outputs
       uses: actions/upload-artifact@v4.6.1
       with:
-       name: results.html
-       path: ./results.html
+        name: snyk-results
+        path: |
+          ./results.html
+          ./sbom.cdx.json
+
+
