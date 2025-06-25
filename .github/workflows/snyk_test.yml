@@ -41,7 +41,7 @@ jobs:
       continue-on-error: true
     - name: Generate CycloneDX SBOM for All Projects
       run: |
-        snyk sbom --all-projects --format=cyclonedx1.4+json --experimental
+        snyk sbom --all-projects --format=cyclonedx1.4+json --experimental --json-file-output=juice-shop-cdx.json
       continue-on-error: true
     # Upload Artifacts
     - name: Upload HTML and SBOM outputs
