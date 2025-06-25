@@ -44,11 +44,16 @@ jobs:
         snyk sbom --all-projects --format=cyclonedx1.4+json --experimental --json-file-output=juice-shop-cdx.json
       continue-on-error: true
     # Upload Artifacts
-    - name: Upload HTML and SBOM outputs
+    - name: Upload snyk html
       uses: actions/upload-artifact@v4.6.1
       with:
         name: snyk-results
         path: |
           ./results.html
-
+    - name: Upload CycloneDX SBOM
+      uses: actions/upload-artifact@v4.6.1
+      with:
+        name: juice-shop-cdx-sbom # Name for this artifact
+        path: ./juice-shop-cdx.json
+    
 
