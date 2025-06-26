@@ -175,7 +175,7 @@
     "jasmine": "^3.6.1",
     "jasmine-core": "^3.6.0",
     "jasmine-reporters": "^2.3.2",
-    "jest": "^26.2.2",
+    "jest": "^28.0.0",
     "mocha": "^8.1.1",
     "node-fetch": "2.1.2",
     "nyc": "^15.1.0",
