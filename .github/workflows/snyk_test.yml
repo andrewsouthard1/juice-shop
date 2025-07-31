@@ -11,8 +11,7 @@ jobs:
     name: 'Snyk Open Source'
     runs-on: ubuntu-latest
     env: 
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-       
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}   
     steps:
     # Checkout Code
     - name: Checkout Code
