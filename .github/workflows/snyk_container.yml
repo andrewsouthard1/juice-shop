@@ -18,11 +18,14 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v1
 
-    # Install and Authenticate to Snyk
-    - name: Install Snyk & Authenticate
-      run: |
-         sudo npm install -g snyk
-         snyk auth ${SNYK_TOKEN}
+    - name: Set up Node.js 14.x
+      uses: actions/setup-node@v4 # Use a newer version of setup-node
+
+    # install snyk and snyk-to-html
+    - name: Snyk Action
+      uses: snyk/actions/setup@master
+    - name: Snyk-to-html
+      run: npm install -g snyk-to-html
          
     # Docker Build
     - name: Build Container     
