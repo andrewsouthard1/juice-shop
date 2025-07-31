@@ -24,7 +24,7 @@ jobs:
 
     # install snyk and snyk-to-html - Updated to a recent, stable version
     - name: Snyk Action
-      uses: snyk/actions/setup@v1.4.0
+      uses: snyk/actions/setup@master
       
     - name: Snyk-to-html
       run: npm install -g snyk-to-html
