@@ -3,45 +3,45 @@ name: "Snyk Container Test"
 on:
   push:
     branches:
-    - master
+      - master
 
 jobs:
   Pipeline-Job:
     # Configure Environment
     name: 'Snyk Test'
     runs-on: ubuntu-latest
-    env: 
+    env:  
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-       
+        
     steps:
-    # Checkout Code
+    # Checkout Code - Updated to a recent, stable version
     - name: Checkout Code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
 
     - name: Set up Node.js 14.x
-      uses: actions/setup-node@v4 # Use a newer version of setup-node
+      uses: actions/setup-node@v4
 
-    # install snyk and snyk-to-html
+    # install snyk and snyk-to-html - Updated to a recent, stable version
     - name: Snyk Action
-      uses: snyk/actions/setup@master
+      uses: snyk/actions/setup@v1.4.0  # Use a specific, non-master tag for stability and to avoid deprecation warnings
     - name: Snyk-to-html
       run: npm install -g snyk-to-html
-         
+          
     # Docker Build
-    - name: Build Container     
+    - name: Build Container      
       run: |
-         docker build .  -t andrewsouthard1/juiceshop:main
-         
-    # Run Snyk Container Test     
+        docker build .  -t andrewsouthard1/juiceshop:main
+        
+    # Run Snyk Container Test      
     - name: Snyk Container Test
       run: |
-         snyk container test --json --file=Dockerfile andrewsouthard1/juiceshop:main  --severity-threshold=high | snyk-to-html -o results-container.html
+        snyk container test --json --file=Dockerfile andrewsouthard1/juiceshop:main  --severity-threshold=high | snyk-to-html -o results-container.html
       continue-on-error: true
       
-    # Run Snyk Container Monitor     
+    # Run Snyk Container Monitor      
     - name: Snyk Container Monitor
       run: |
-         snyk container monitor andrewsouthard1/juiceshop:main
+        snyk container monitor andrewsouthard1/juiceshop:main
       continue-on-error: true
       
     - name: Upload snyk html
@@ -51,21 +51,23 @@ jobs:
         path: |
           ./results-container.html
       
+    # Set up QEMU - Updated to a recent, stable version
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v1
+      uses: docker/setup-qemu-action@v3.0.0
       
+    # Set up Docker Buildx - Updated to a recent, stable version
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-             
+      uses: docker/setup-buildx-action@v3.0.0
+              
     - name: Login to DockerHub
-      uses: docker/login-action@v1 
+      uses: docker/login-action@v3.0.0 # Also updated this to a newer version
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and push
       id: docker_build
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v5.0.0 # Updated this to a newer version
       with:
         push: true
         tags: andrewsouthard1/juiceshop:main
