@@ -7,7 +7,6 @@ on:
 
 jobs:
   Pipeline-Job:
-    # Configure Environment
     name: 'Snyk Test'
     runs-on: ubuntu-latest
     env:  
@@ -20,10 +19,13 @@ jobs:
 
     - name: Set up Node.js 14.x
       uses: actions/setup-node@v4
+      with:
+        node-version: '14'
 
     # install snyk and snyk-to-html - Updated to a recent, stable version
     - name: Snyk Action
-      uses: snyk/actions/setup@v1.4.0  # Use a specific, non-master tag for stability and to avoid deprecation warnings
+      uses: snyk/actions/setup@v1.4.0
+      
     - name: Snyk-to-html
       run: npm install -g snyk-to-html
           
@@ -32,13 +34,15 @@ jobs:
       run: |
         docker build .  -t andrewsouthard1/juiceshop:main
         
-    # Run Snyk Container Test      
+    # Run Snyk Container Test - Corrected the snyk-to-html command
     - name: Snyk Container Test
+      id: snyk_container_test_step
       run: |
-        snyk container test --json --file=Dockerfile andrewsouthard1/juiceshop:main  --severity-threshold=high | snyk-to-html -o results-container.html
+        snyk container test --json --file=Dockerfile andrewsouthard1/juiceshop:main --severity-threshold=high > results-container.json
+        snyk-to-html -i results-container.json -o results-container.html
       continue-on-error: true
       
-    # Run Snyk Container Monitor      
+    # Run Snyk Container Monitor - This step is good
     - name: Snyk Container Monitor
       run: |
         snyk container monitor andrewsouthard1/juiceshop:main
@@ -60,14 +64,14 @@ jobs:
       uses: docker/setup-buildx-action@v3.0.0
               
     - name: Login to DockerHub
-      uses: docker/login-action@v3.0.0 # Also updated this to a newer version
+      uses: docker/login-action@v3.0.0
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and push
       id: docker_build
-      uses: docker/build-push-action@v5.0.0 # Updated this to a newer version
+      uses: docker/build-push-action@v5.0.0
       with:
         push: true
         tags: andrewsouthard1/juiceshop:main
