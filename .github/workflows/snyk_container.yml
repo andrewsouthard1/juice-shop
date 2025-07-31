@@ -41,6 +41,13 @@ jobs:
          snyk container monitor andrewsouthard1/juiceshop:main
       continue-on-error: true
       
+    - name: Upload snyk html
+      uses: actions/upload-artifact@v4.6.1
+      with:
+        name: snyk-results
+        path: |
+          ./results-container.html
+      
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
       
