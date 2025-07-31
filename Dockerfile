@@ -1,7 +1,7 @@
 # Start with the Node 14 image on Debian Bullseye.
 FROM node:14.21.3-bullseye
 
-# Update apt and install `wget` and `dpkg` dependencies in a single layer.
+# Update apt and install necessary packages (wget, dpkg) in a single layer.
 RUN apt-get -y update && apt-get -y install \
     ca-certificates \
     apt-transport-https \
@@ -9,15 +9,14 @@ RUN apt-get -y update && apt-get -y install \
     dpkg
 
 # Download the specific .deb package for the vulnerable version from the Debian snapshot archive.
-# This URL is a direct link to the package file from the `buster` distribution.
-RUN wget http://snapshot.debian.org/archive/debian/20211201T215332Z/pool/main/libl/liblog4j2-java/liblog4j2-java_2.11.1-2_all.deb -O /tmp/liblog4j2.deb
+# The URL has been corrected based on the Debian package tracker and archive structure.
+RUN wget http://snapshot.debian.org/archive/debian/20211201T215332Z/pool/main/a/apache-log4j2/liblog4j2-java_2.11.1-2_all.deb -O /tmp/liblog4j2.deb
 
 # Manually install the downloaded package using `dpkg`.
-# `dpkg` will install the package from the local file, ignoring repository versions.
-# We use `|| apt-get -y install -f` to automatically handle any dependencies.
+# Use `apt-get install -f` to automatically handle any dependencies.
 RUN dpkg -i /tmp/liblog4j2.deb || apt-get -y install -f
 
-# Clean up the downloaded file to keep the image size down.
+# Clean up the downloaded file.
 RUN rm /tmp/liblog4j2.deb
 
 ARG BUILD_DATE
