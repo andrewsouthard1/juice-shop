@@ -32,7 +32,7 @@ jobs:
     # Run Snyk Container Test     
     - name: Snyk Container Test
       run: |
-         snyk container test --file=Dockerfile andrewsouthard1/juiceshop:main  --severity-threshold=high
+         snyk container test --json --file=Dockerfile andrewsouthard1/juiceshop:main  --severity-threshold=high | snyk-to-html -o results-container.html
       continue-on-error: true
       
     # Run Snyk Container Monitor     
