@@ -8,7 +8,7 @@ on:
 jobs:
   Pipeline-Job:
     # Configure Environment
-    name: 'Snyk Test'
+    name: 'Snyk-Test'
     runs-on: ubuntu-latest
     env: 
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
